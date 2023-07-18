@@ -45,7 +45,11 @@ export class BroadcastOperator<EmitEvents extends EventsMap, SocketData>
   public to(room: Room | Room[]) {
     const rooms = new Set(this.rooms);
     if (Array.isArray(room)) {
-      room.forEach((r) => rooms.add(r));
+      if (room.length === 0) {
+        rooms.add("empty");
+      } else {
+        room.forEach((r) => rooms.add(r));
+      }
     } else {
       rooms.add(room);
     }

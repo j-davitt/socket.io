@@ -584,4 +584,21 @@ describe("messaging many", () => {
 
     socket.on("woot", partialDone);
   });
+
+  it("should not broadcast when emitting to an empty room array", (done) => {
+    const io = new Server(0);
+    const socket = createClient(io, "/", { multiplex: false });
+
+    io.on("connection", () => {
+      io.to([]).emit("hello");
+    });
+
+    socket.on("hello", () => {
+      done(new Error("should not happen"));
+    });
+
+    setTimeout(() => {
+      success(done, io, socket);
+    }, 100);
+  });
 });
