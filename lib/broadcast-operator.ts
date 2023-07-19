@@ -43,10 +43,15 @@ export class BroadcastOperator<EmitEvents extends EventsMap, SocketData>
    * @return a new {@link BroadcastOperator} instance for chaining
    */
   public to(room: Room | Room[]) {
+    if (Array.isArray(room) && room.length === 0) return this;
     const rooms = new Set(this.rooms);
     if (Array.isArray(room)) {
       if (room.length === 0) {
-        rooms.add("empty");
+        // return this; //doesnt solve the issue of rooms still being an empty Set that is causing the issue.
+        // adding a dummy value to the Set to make it work.
+        console.log("ROOMS >>>>", rooms);
+        rooms.add("empty-room-array");
+        console.log("ROOMS >>>>", rooms);
       } else {
         room.forEach((r) => rooms.add(r));
       }
